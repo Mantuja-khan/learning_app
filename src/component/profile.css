@@ -1,0 +1,141 @@
+.main_profile_page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 700px;
+}
+
+.profile-container1 {
+  overflow-y: hidden;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 2rem;
+}
+
+.header1 {
+  text-align: center;
+}
+
+.header1 h2 {
+  color: #1a73e8;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.profile-details1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-info1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.profile-picture1 {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-size: cover;
+  object-fit:fill;
+  border: 4px solid #1a73e8;
+  margin-top: 30px;
+}
+
+.name1 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0.5rem 0;
+}
+
+.edit-btn1 {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn1:hover {
+  background-color: #1557b0;
+}
+
+.form-fields1 {
+  width: 100%;
+}
+
+.field-row1 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.field1 {
+  width: 48%;
+}
+
+.field1 label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.field1 input[type="text"],
+.field1 input[type="password"],
+.field1 input[type="file"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.field1 p {
+  color: #b05a0a;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0.5rem 0;
+  background: #eeeded;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.Roll_no-section1 {
+  text-align: center;
+}
+
+.Roll_no-section1 h4 {
+  color: #666;
+}
+
+.Roll_no-section1 p {
+  font-size: 1.7rem;
+  color: #1a73e8;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .profile-container1 {
+    padding: 1rem;
+  }
+
+  .field-row1 {
+    flex-direction: column;
+  }
+
+  .field1 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+

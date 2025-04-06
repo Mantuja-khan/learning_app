@@ -1,0 +1,203 @@
+/* Body and background styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url("https://plus.unsplash.com/premium_photo-1677187301535-b46cec7b2cc8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c3R1ZHklMjBhcHBsaWNhdGlvbiUyMGJhY2tncm91bmQlMjBpbWFnZXxlbnwwfHwwfHx8MA%3D%3D");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_main_container{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login form styling */
+.login-form {
+    background-color: #cac5c5;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-form h2 {
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: 1px;
+}
+
+/* Form group and input styling */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Input focus and error states */
+.form-group input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+.form-group.input-error input {
+    border-color: #e74c3c;
+}
+
+.form-group.input-error input:focus {
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+.form-group input:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/* Login button styles */
+.login-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Disabled button state */
+.login-btn:disabled {
+    background: #a9d2f3;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.login-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    box-shadow: 0 6px 18px rgba(52, 152, 219, 0.4);
+}
+
+/* Error and success messages */
+.error-message, .success-message {
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+.error-message {
+    color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+.success-message {
+    color: #2ecc71;
+    background-color: rgba(46, 204, 113, 0.1);
+}
+
+/* Additional animations */
+.error-message, .success-message {
+    animation: fadeInMessage 0.4s ease-in-out;
+}
+
+@keyframes fadeInMessage {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .login-form {
+        padding: 25px;
+        max-width: 90%;
+    }
+
+    .login-form h2 {
+        font-size: 24px;
+    }
+
+    .form-group input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .login-btn {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form {
+        padding: 20px;
+    }
+
+    .login-form h2 {
+        font-size: 22px;
+    }
+
+    .form-group input {
+        padding: 10px;
+    }
+
+    .login-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

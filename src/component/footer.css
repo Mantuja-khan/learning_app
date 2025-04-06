@@ -1,0 +1,148 @@
+/* StudyAppFooter.css */
+.study-app-footer {
+    background-color: #2563eb; /* Blue-600 equivalent */
+    color: white;
+    padding: 2rem 1rem;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-content {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  
+  .footer-logo-section {
+    text-align: center;
+    max-width: 300px;
+  }
+  
+  .footer-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+  }
+  
+  .footer-links-section,
+  .footer-contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-links-section,
+    .footer-contact-section {
+      align-items: flex-start;
+    }
+  }
+  
+  .footer-section-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-nav {
+      text-align: left;
+    }
+  }
+  
+  .footer-nav-link {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .footer-nav-link:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .footer-social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .social-icon {
+    color: white;
+    transition: color 0.2s ease;
+  }
+  
+  .social-icon:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .footer-contact-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .contact-email {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .contact-email:hover {
+    text-decoration: underline;
+  }
+  
+  .footer-copyright {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+  }
+  
+  .copyright-text {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .legal-links {
+    margin-left: 1rem;
+  }
+  
+  .legal-link {
+    color: white;
+    text-decoration: none;
+    margin-left: 0.5rem;
+    transition: color 0.2s ease;
+  }
+  
+  .legal-link:hover {
+    text-decoration: underline;
+  }
+  
+  @media (min-width: 768px) {
+    .footer-logo-section,
+    .footer-links-section,
+    .footer-contact-section {
+      text-align: left;
+    }
+  }
