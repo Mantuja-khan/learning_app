@@ -16,7 +16,7 @@ const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const branches = {
-    'CSE': ['Physics', 'Into to C', 'BEE', 'Engineering mathematics 1','Engineering mathematics 2','Chemistry','MEFA','M.E.','Environmental Eng.','DSA','C++','S.E.','Linux','AEM','D.E.','Python','Java','Discrete Mathematics','TOC','MPI','CC','DMW','DS','COA','ML','CN','OS','CD','DIP','NLP','ISS','IOT','AOA','GAI','Disaster Management','Deep Learning'],
+    'CSE': ['Physics', 'Into to C', 'BEE', 'Engineering mathematics 1','Engineering mathematics 2','Chemistry','MEFA','M.E.','Environmental Eng.','DSA','C++','S.E.','Linux','AEM','D.E.','Python','Java','Discrete Mathematics','TOC','MPI','CC','DMW','DS','COA','ML','CN','OS','CD','DIP','NLP','ISS','IOT','AOA','GAI','Disaster Management','Deep Learning','cloud computing','FHI'],
     'Mechanical': ['Thermodynamics', 'Fluid Mechanics'],
     'Civil': ['Structural Engineering', 'Geotechnical Engineering'],
     'ECE': ['Circuit Theory', 'Electromagnetics'],
@@ -76,8 +76,38 @@ const DashboardPage = () => {
       if (youtubeURL) {
         fileUploadPromises.push(push(notesRef, { name: `${subject}`, url: youtubeURL, type: 'youtube', timestamp: Date.now() }));
       }
+      
+
+      const sendNotificationToStudents = async (branch, message, link) => {
+        const db = getDatabase(app);
+        const studentsRef = databaseRef(db, 'students');
+      
+        const snapshot = await get(studentsRef);
+        if (snapshot.exists()) {
+          const studentsData = snapshot.val();
+      
+          Object.keys(studentsData).forEach(studentId => {
+            const student = studentsData[studentId];
+            if (student.branch === branch) {
+              const notificationRef = databaseRef(db, `notifications/${studentId}`);
+              push(notificationRef, {
+                message,
+                link,
+                read: false,
+                id: Date.now().toString(),
+              });
+            }
+          });
+        }
+      };
+      
 
       await Promise.all(fileUploadPromises);
+      await sendNotificationToStudents(
+        branch,
+        `New material uploaded for ${subject} (Sem ${semester})`,
+        `/notes` // or specific link if needed
+      );
       setMessage('Notes and videos uploaded successfully!');
       setBranch('');
       setSemester('');

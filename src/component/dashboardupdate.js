@@ -25,20 +25,36 @@ const DashboardUpdate = () => {
   // Function to fetch uploaded materials from Firebase Realtime Database
   const fetchMaterials = useCallback(() => {
     if (!branch || !semester) return;
-    
+  
     const database = getDatabase(app);
     const notesRef = databaseRef(database, `notes/${branch}/semester_${semester}`);
-    
+  
     onValue(notesRef, (snapshot) => {
       const data = snapshot.val();
-      if (data) {
-        const materialList = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-        setMaterials(materialList);
-      } else {
+      if (!data) {
         setMaterials([]);
+        return;
       }
+  
+      const groupedMaterials = [];
+  
+      Object.entries(data).forEach(([subject, files]) => {
+        if (typeof files === 'object') {
+          Object.entries(files).forEach(([fileId, fileData]) => {
+            groupedMaterials.push({
+              id: fileId,
+              subject,
+              name: fileData.name,
+              type: fileData.type || 'pdf',
+            });
+          });
+        }
+      });
+  
+      setMaterials(groupedMaterials);
     });
   }, [branch, semester]);
+  
 
   // Fetch materials whenever branch or semester changes
   useEffect(() => {
@@ -65,7 +81,7 @@ const DashboardUpdate = () => {
         console.log(`Processing material: ${JSON.stringify(material)}`);
   
         // Delete from database first
-        const materialRef = databaseRef(database, `notes/${branch}/semester_${semester}/${materialId}`);
+        const materialRef = databaseRef(database, `notes/${branch}/semester_${semester}/${material.subject}/${materialId}`);
         await remove(materialRef);
   
         console.log(`Attempting to delete ${material.type} - ${material.name}`);
@@ -74,7 +90,7 @@ const DashboardUpdate = () => {
         if (material.type === 'pdf' || material.type === 'video') {
           // Get the file name without the .pdf extension
           const materialNameWithoutPdf = material.name.replace(/\.pdf$/, '');
-          const filePath = `${material.type === 'pdf' ? 'notes' : 'videos'}/${branch}/semester_${semester}/${materialNameWithoutPdf}`;
+          const filePath = `${material.type === 'pdf' ? 'notes' : 'videos'}/${branch}/semester_${semester}/${material.subject}/${materialNameWithoutPdf}`;
           const fileRef = storageRef(storage, filePath);
   
           console.log(`File path: ${filePath}`); // Log the file path
@@ -146,7 +162,7 @@ const DashboardUpdate = () => {
         <div className="materials-list">
           <h3>Uploaded Materials</h3>
           <ul>
-            {materials.map(material => (
+            {materials.map((material) => (
               <li key={material.id}>
                 <label>
                   <input
@@ -154,7 +170,7 @@ const DashboardUpdate = () => {
                     checked={selectedMaterials.includes(material.id)}
                     onChange={() => handleSelectMaterial(material.id)}
                   />
-                  {material.name} ({material.type})
+                  {material.subject} - {material.name} ({material.type})
                 </label>
               </li>
             ))}

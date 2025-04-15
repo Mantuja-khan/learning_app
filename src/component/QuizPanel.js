@@ -5,7 +5,7 @@ import './QuizPanel.css'
 const branches = [
   { label: "Computer Science", value: "Computer Science" },
   { label: "Electrical Engineering", value: "Electrical Engineering" },
-  { label: "Mechanical Engineering", value: "Mechanical Engineering" }
+  { label: "Mechanical Engineering", value: "Mechanical" }
 ];
 
 const semesters = [

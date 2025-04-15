@@ -157,7 +157,7 @@ const ResultPage = () => {
       </div>
 
       <button onClick={handleRetakeQuiz} className="retake-quiz-btn">
-        Retake Quiz
+        HOME
       </button>
     </div>
   );

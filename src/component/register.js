@@ -43,23 +43,61 @@ const RegisterPage = () => {
 
   const validateFirstSection = () => {
     let formErrors = {};
-    if (!formData.name) formErrors.name = 'Name is required';
-    if (!formData.surname) formErrors.surname = 'Surname is required';
-    if (!formData.number) formErrors.number = 'Phone number is required';
-      if (!formData.password) formErrors.password = 'Password is required';
+    const nameRegex = /^[A-Za-z]+$/;
+    const phoneRegex = /^\d{10}$/;
+  
+    if (!formData.name) {
+      formErrors.name = 'Name is required';
+    } else if (!nameRegex.test(formData.name)) {
+      formErrors.name = 'Name must contain only letters';
+    }
+  
+    if (!formData.surname) {
+      formErrors.surname = 'Surname is required';
+    } else if (!nameRegex.test(formData.surname)) {
+      formErrors.surname = 'Surname must contain only letters';
+    }
+  
+    if (!formData.number) {
+      formErrors.number = 'Phone number is required';
+    } else if (!phoneRegex.test(formData.number)) {
+      formErrors.number = 'Phone number must be 10 digits';
+    }
+  
+    if (!formData.password) {
+      formErrors.password = 'Password is required';
+    }
+  
     return formErrors;
   };
+  
 
   const validateForm = () => {
     let formErrors = validateFirstSection();
-    if (!formData.number) formErrors.number = 'Phone number is required';
+  
+    const rollRegex = /^\d{7}$/;
+  
     if (!formData.Roll_no) {
-      formErrors.Roll_no = 'Roll_no is required';
+      formErrors.Roll_no = 'Roll number is required';
     } else if (!/^\d{7}$/.test(formData.Roll_no)) {
-      formErrors.Roll_no = 'Roll_no must be of 6 digits';
+      formErrors.Roll_no = 'Roll number must be exactly 7 digits';
+    } else if (/^00+/.test(formData.Roll_no)) {
+      formErrors.Roll_no = 'Roll number cannot start with all zeros';
+    } else if (!/^[2-9][0-9]/.test(formData.Roll_no)) {
+      formErrors.Roll_no = 'First two digits should be a valid year (e.g., 21)';
     }
-    if (!formData.branch) formErrors.branch = 'Branch is required';
-    if (!formData.semester) formErrors.semester = 'Semester is required';
+  
+    if (!formData.branch) {
+      formErrors.branch = 'Branch is required';
+    }
+  
+    const sem = parseInt(formData.semester);
+    if (!formData.semester) {
+      formErrors.semester = 'Semester is required';
+    } else if (isNaN(sem) || sem < 1 || sem > 8) {
+      formErrors.semester = 'Semester must be a number between 1 and 8';
+    }
+  
     return formErrors;
   };
 
@@ -119,30 +157,56 @@ const RegisterPage = () => {
     audio.loop = true; // Loop the audio until process finishes
     audio.preload = 'auto'; // Preload the audio for instant playback
     
+    // try {
+    //   audio.play(); // Play the sound
+    //   const isUnique = await isRollNoUnique(formData.Roll_no);
+    //   if (!isUnique) {
+    //     setErrors({ Roll_no: 'This Roll_no is already in use.' });
+    //     setIsLoading(false); // Hide loading screen
+    //     return;
+    //   }
+
+    //   await registerUserInDatabase(); // Register the user in the database
+    //   localStorage.setItem('studentName', formData.name);
+    //   localStorage.setItem('authToken', 'yourAuthTokenHere'); // Simulating login token
+    //   localStorage.setItem('isRegistered', 'true'); // Mark user as registered
+    //   localStorage.setItem('studentRoll_no', formData.Roll_no);
+
+    //   audio.pause(); // Stop the audio when registration is successful
+    //   navigate('/'); // Navigate to the dashboard after successful registration
+    // } catch (error) {
+    //   console.error("Error during registration:", error);
+    //   setErrors({ submit: "Registration failed. Please try again." });
+    // } finally {
+    //   audio.pause(); // Stop the audio regardless of success or failure
+    //   setIsLoading(false); // Hide loading screen
+    // }
     try {
-      audio.play(); // Play the sound
+      await audio.play(); // Properly wait for the sound to start
       const isUnique = await isRollNoUnique(formData.Roll_no);
       if (!isUnique) {
+        audio.pause();  // Stop the sound if roll number is duplicate
         setErrors({ Roll_no: 'This Roll_no is already in use.' });
-        setIsLoading(false); // Hide loading screen
+        setIsLoading(false);
         return;
       }
-
-      await registerUserInDatabase(); // Register the user in the database
+    
+      await registerUserInDatabase();
       localStorage.setItem('studentName', formData.name);
-      localStorage.setItem('authToken', 'yourAuthTokenHere'); // Simulating login token
-      localStorage.setItem('isRegistered', 'true'); // Mark user as registered
+      localStorage.setItem('authToken', 'yourAuthTokenHere');
+      localStorage.setItem('isRegistered', 'true');
       localStorage.setItem('studentRoll_no', formData.Roll_no);
-
-      audio.pause(); // Stop the audio when registration is successful
-      navigate('/'); // Navigate to the dashboard after successful registration
+    
+      audio.pause();  // Stop audio after successful registration
+      navigate('/');
     } catch (error) {
       console.error("Error during registration:", error);
       setErrors({ submit: "Registration failed. Please try again." });
     } finally {
-      audio.pause(); // Stop the audio regardless of success or failure
-      setIsLoading(false); // Hide loading screen
+      audio.pause();  // Extra safety
+      setIsLoading(false);
     }
+    
   } else {
     setErrors(validationErrors); // Show validation errors
   }
@@ -221,15 +285,20 @@ const RegisterPage = () => {
             </div>
             <div className="form-group1">
               <label>Branch</label>
-              <input
-                type="text"
+              <select
                 name="branch"
                 value={formData.branch}
                 onChange={handleChange}
-                placeholder="Enter your branch"
-              />
+              >
+                <option value="">Select your branch</option>
+                <option value="CSE">Computer Science (CSE)</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Civil">Civil</option>
+                <option value="Electrical">Electrical</option>
+              </select>
               {errors.branch && <span className="error">{errors.branch}</span>}
             </div>
+
             <div className="form-group1">
               <label>Semester</label>
               <input
@@ -251,7 +320,12 @@ const RegisterPage = () => {
               />
             </div>
             {errors.submit && <span className="error">{errors.submit}</span>}
-            <button type="submit" className="btn2">Create Account</button>
+            <div className="button-group">
+              <button type="button" className="btn1" onClick={() => setShowSecondSection(false)}>
+                Back
+              </button>
+              <button type="submit" className="btn2">Create Account</button>
+            </div>
           </div>
         )}
       </form>

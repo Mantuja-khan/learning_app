@@ -197,3 +197,15 @@ Container for registration form
         height: 40px;
     } */
 }
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .button-group .btn1,
+  .button-group .btn2 {
+    flex: 1;
+  }
+  

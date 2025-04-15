@@ -12,16 +12,27 @@ const UploadQuiz = () => {
   const [answer, setAnswer] = useState('');
 
   const handleUpload = () => {
+    const trimmedQuestion = question.trim();
+    const trimmedOptions = options.map(opt => opt.trim());
+    const trimmedAnswer = answer.trim();
     if (!branch || !semester || !difficulty || !question || !options[0] || !answer) {
       alert('Please fill all fields');
+      return;
+    }
+    if (trimmedOptions.some(opt => opt === '')) {
+      alert('Please fill all four options');
+      return;
+    }
+    if (!trimmedOptions.includes(trimmedAnswer)) {
+      alert('Answer must match one of the options');
       return;
     }
 
     const quizRef = ref(database, `quizzes/${branch}/${semester}/${difficulty}/${Date.now()}`);
     set(quizRef, {
-      question,
-      options,
-      answer,
+      question: trimmedQuestion,
+      options: trimmedOptions,
+      answer: trimmedAnswer,
     }).then(() => {
       alert('Quiz uploaded successfully!');
       // Clear the fields

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './study.css';
 import logoutTune from '../assest/intro_music.mp3';
@@ -13,6 +13,8 @@ import WaitingScreen from './waiting';
 
 const StudentDashboard = () => {
     const navigate = useNavigate();
+    const notificationRef = useRef(null);
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [studentName, setStudentName] = useState('Student');
     const [isRegistered, setIsRegistered] = useState(false);
@@ -22,6 +24,25 @@ const StudentDashboard = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+                setShowNotifications(false);
+            }
+        };
+    
+        if (showNotifications) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+    
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showNotifications]);
+    
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -138,7 +159,7 @@ const StudentDashboard = () => {
                     />
                     {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
                     {showNotifications && (
-                        <div className="notifications-dropdown">
+                        <div className="notifications-dropdown" ref={notificationRef}>
                             <h3>Notifications</h3>
                             {notifications.length > 0 ? (
                                 notifications.map((notification, index) => (
