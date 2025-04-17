@@ -1,116 +1,271 @@
-.main_note_page{
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  margin-top: 100px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-.container .h1{
-  background-color: black;
-  color: white;
-  border-radius: 20px ;
+.main_note_page {
+  min-height: 100vh;
+  background: linear-gradient(to right bottom, #f8f9fa, #e9ecef);
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
 }
 
-h1 {
+.note-title {
+  
   text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.note-title span {
   color: #333;
 }
 
+.note-title .hub {
+  color: #3563e9;
+}
+
+.container {
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  width: 100%;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.75rem;
+}
+
+/* Left side form and subject selection */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.form-controls {
+  width: 30%;
+  padding-right: 2rem;
+}
+
+.content-area {
+  display: flex;
+  width: 100%;
+}
+
+.left-panel {
+  width: 40%;
+  padding-right: 2rem;
+}
+
+.right-panel {
+  width: 60%;
+  border-left: 1px solid #e0e0e0;
+  padding-left: 2rem;
+  min-height: 300px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
 }
 
 select {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 4px;
+  padding: 0.75rem;
+  border-radius: 6px;
   border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
 }
 
-.notes {
-  margin-top: 30px;
+select:focus {
+  outline: none;
+  border-color: #3563e9;
+  box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.15);
 }
 
-.notes h2{
-  font-size: 20px;
-  color: black;
+select:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
 }
 
-ul {
-  list-style-type: none;
+.subject-list {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.subject-list h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #444;
+  font-weight: 600;
+}
+
+.subject-list ul {
+  list-style: none;
   padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
-ul li {
-  background:orange;
-  color: black;
-  padding: 10px;
-  margin-bottom: 5px;
-  border-radius: 4px;
+.subject-list li {
+  margin: 0;
 }
-.note-title {
-  position: absolute;
-  top: 1px;
-  left: 20px;
-  font-size: 36px;
-  font-weight: bold;
+
+.subject-btn {
+  background-color: #f0f4ff;
+  color: #3563e9;
+  border: 1px solid #d0deff;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  background-color: black;
-  color:white;
-  width: 310px;
-  text-align: center;
-  align-content: center;
-  border-radius: 10px;
-  height: 60px;
-}
-.note-title .hub{
-  color: black; /* Second part in orange */
-  background-color: orange;
-  padding: 0 10px;
-  border-radius: 5px;
+  transition: all 0.2s ease;
 }
 
-.url{
-color: black;
-text-decoration: none;
-/* font-weight: 550; */
-
+.subject-btn:hover {
+  background-color: #e0eaff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(53, 99, 233, 0.15);
 }
 
-.subject-list h2{
-  /* font-size: 20px; */
-  color: black;
+.subject-btn.active {
+  background-color: #3563e9;
+  color: white;
+  border-color: #3563e9;
 }
 
-.subject-btn{
-  background: none;
-  border: none;
-  color: black; /* Change to match your theme */
-  font-size: 16px;
-  cursor: pointer;
+/* Resources section */
+.resources {
+  margin-top: 2rem;
+  background-color: #f9fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #eaedf3;
+}
+
+.resources h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #444;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.resources h2::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 20px;
+  background-color: #3563e9;
+  border-radius: 3px;
+  margin-right: 0.75rem;
+}
+
+.resources ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resources li {
+  margin-bottom: 0.75rem;
+}
+
+.resource-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid #eaedf3;
+  transition: all 0.2s ease;
+}
+
+.resource-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #d0deff;
+}
+
+.url {
   text-decoration: none;
-  font-weight: 550;
-  
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.url span {
+  margin-left: 0.5rem;
+  background-color: #e7efff;
+  color: #3563e9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Loading states */
+p {
+  color: #666;
+}
+
+/* Media queries for responsiveness */
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
   }
-  .resource-item{
-    color: black;
-    text-decoration: none;
-    /* font-weight: 550; */
-    
-    }
+  
+  .form-group {
+    width: 48%;
+    margin-right: 2%;
+  }
+}
+
+/* Two-column layout for subject and resources */
+@media (min-width: 992px) {
+  .content-wrapper {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
+  
+  .subject-list {
+    width: 40%;
+    margin-top: 0;
+  }
+  
+  .subject-list ul {
+    flex-direction: column;
+  }
+  
+  .subject-btn {
+    width: 100%;
+    text-align: left;
+  }
+  
+  .resources {
+    width: 60%;
+    margin-top: 0;
+  }
+}

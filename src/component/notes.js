@@ -68,62 +68,75 @@ const Notes = () => {
         <span>Knowledge</span> <span className="hub">Hub</span>
       </h1>
       <div className="container">
-      <h1 className="h1">Select Notes & Videos</h1>
+        <h1 className="h1">Select Notes & Videos</h1>
 
-      <div className="form-group">
-      <label htmlFor="branchSelect">Select Branch:</label>
-      <select id="branchSelect" value={branch} onChange={(e) => setBranch(e.target.value)}>
-          <option value="">Select Branch</option>
-          {branches.map((b) => <option key={b} value={b}>{b}</option>)}
-        </select>
-      </div>
-
-      <div className="form-group">
-      <label htmlFor="semesterSelect">Select Semester:</label>
-      <select id="semesterSelect" value={semester} onChange={handleSemesterChange} disabled={!branch}>
-          <option value="">Select Semester</option>
-          {semesters.map((sem) => <option key={sem} value={sem}>Semester {sem}</option>)}
-        </select>
-      </div>
-
-      {loading && <p>Loading subjects...</p>}
-
-      {subjects.length > 0 && (
-        <div className="subject-list">
-          <h2>Select a Subject:</h2>
-          <ul>
-          {subjects.map(subject => (
-            <li>
-            <button key={subject} className="subject-btn" onClick={() => fetchResources(subject)}>
-              {subject}
-            </button>
-            </li>
-          ))}
-          </ul>
+        {/* Form Controls */}
+        <div className="form-group">
+          <label htmlFor="branchSelect">Select Branch:</label>
+          <select id="branchSelect" value={branch} onChange={(e) => setBranch(e.target.value)}>
+            <option value="">Select Branch</option>
+            {branches.map((b) => <option key={b} value={b}>{b}</option>)}
+          </select>
         </div>
-      )}
 
-      {selectedSubject && (
-        <div className="resources">
-          <h2>Resources for {selectedSubject}:</h2>
-          <ul>
-          {loading ? <p>Loading resources...</p> : resources.length > 0 ? (
-            resources.map(res => (
-              <li>
-              <div key={res.url} className="resource-item">
-                <a href={res.url} target="_blank" rel="noopener noreferrer" className='url'>
-                  <span>({res.type === 'pdf' ? 'PDF' : res.type === 'video' ? 'Video' : 'Video'})</span>
-                </a>
-              </div>
-              </li>
-            ))
-          ) : (
-            <p>No resources available for this subject.</p>
-          )}
-          </ul>
+        <div className="form-group">
+          <label htmlFor="semesterSelect">Select Semester:</label>
+          <select id="semesterSelect" value={semester} onChange={handleSemesterChange} disabled={!branch}>
+            <option value="">Select Semester</option>
+            {semesters.map((sem) => <option key={sem} value={sem}>Semester {sem}</option>)}
+          </select>
         </div>
-      )}
-    </div>
+
+        {/* Two-column layout for subjects and resources */}
+        {subjects.length > 0 && (
+          <div className="content-wrapper">
+            {/* Left side - Subject list */}
+            <div className="subject-list">
+              <h2>Select a Subject:</h2>
+              {loading && <p>Loading subjects...</p>}
+              <ul>
+                {subjects.map(subject => (
+                  <li key={subject}>
+                    <button 
+                      className={`subject-btn ${selectedSubject === subject ? 'active' : ''}`} 
+                      onClick={() => fetchResources(subject)}
+                    >
+                      {subject}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Right side - Resources */}
+            <div className="resources">
+              <h2>{selectedSubject ? `Resources for ${selectedSubject}:` : 'Select a subject to view resources'}</h2>
+              {loading ? (
+                <p>Loading resources...</p>
+              ) : selectedSubject ? (
+                resources.length > 0 ? (
+                  <ul>
+                    {resources.map((res, index) => (
+                      <li key={index}>
+                        <div className="resource-item">
+                          <a href={res.url} target="_blank" rel="noopener noreferrer" className='url'>
+                            {res.title || `Resource ${index + 1}`}
+                            <span>({res.type === 'pdf' ? 'PDF' : 'Video'})</span>
+                          </a>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No resources available for this subject.</p>
+                )
+              ) : (
+                <p>Select a subject from the left to view available resources.</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

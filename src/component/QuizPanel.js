@@ -37,7 +37,7 @@ const QuizPanel = () => {
   
 
   return (
-    <div className="main_quiz_page">
+    <div className="main_quiz_panel">
     <div className="quiz-panel">
       <h2>Quiz Panel</h2>
       <div>

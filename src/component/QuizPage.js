@@ -15,6 +15,7 @@ const QuizPage = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   // Option labels
@@ -53,18 +54,6 @@ const QuizPage = () => {
     setSelectedOptionIndex(null);
   }, [currentQuestionIndex]);
 
-  if (loading) {
-    return <div>Loading questions... Please wait!</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (questions.length === 0) {
-    return <div>No questions available for the selected options!</div>;
-  }
-
   const handleAnswerClick = (isCorrect, questionId, selectedOption, index) => {
     // Prevent multiple selections
     if (selectedOptionIndex !== null) return;
@@ -77,32 +66,66 @@ const QuizPage = () => {
       ...prevAnswers,
       { questionId, isCorrect, yourAnswer: selectedOption },
     ]);
-  };
 
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }
+    // Auto-advance to next question after a short delay to show feedback
+    setTimeout(() => {
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      }
+    }, 800);
   };
 
   const handleFinishQuiz = () => {
-    const totalQuestions = questions.length;
-    const attempts = userAnswers.length;
-    const score = userAnswers.filter((answer) => answer.isCorrect).length;
-    const incorrectAnswers = userAnswers.filter((answer) => !answer.isCorrect);
+    setSubmitting(true);
+    
+    // Simulate processing time
+    setTimeout(() => {
+      const totalQuestions = questions.length;
+      const attempts = userAnswers.length;
+      const score = userAnswers.filter((answer) => answer.isCorrect).length;
+      const incorrectAnswers = userAnswers.filter((answer) => !answer.isCorrect);
 
-    // Navigate to the ResultsPage with calculated results
-    navigate("/results", {
-      state: {
-        totalQuestions,
-        score,
-        attempts,
-        incorrectAnswers,
-        questions,
-        userAnswers,
-      },
-    });
+      // Navigate to the ResultsPage with calculated results
+      navigate("/results", {
+        state: {
+          totalQuestions,
+          score,
+          attempts,
+          incorrectAnswers,
+          questions,
+          userAnswers,
+        },
+      });
+    }, 1500);
   };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading questions... Please wait!</p>
+      </div>
+    );
+  }
+
+ if (submitting) {
+  return (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <div className="loading-text">
+        <p>Calculating your results<span className="loading-dots">...</span></p>
+      </div>
+    </div>
+  );
+}
+
+  if (error) {
+    return <div className="error-message">Error: {error}</div>;
+  }
+
+  if (questions.length === 0) {
+    return <div className="error-message">No questions available for the selected options!</div>;
+  }
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -123,18 +146,38 @@ const QuizPage = () => {
       return "option-button incorrect";
     }
 
+    // If this is the correct answer but not selected
+    if (currentQuestion.options[index] === currentQuestion.answer) {
+      return "option-button correct-answer";
+    }
+
     // Other options when one is selected
     return "option-button disabled";
   };
 
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
   return (
-    <div className="main_quiz_page">
+    <div className="quiz-page-wrapper">
       <div className="quiz-page">
-        <h2>Quiz Page</h2>
+        <div className="quiz-header">
+          <h2>Quiz</h2>
+          <div className="quiz-progress">
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+              ></div>
+            </div>
+            <span className="progress-text">
+              Question {currentQuestionIndex + 1} of {questions.length}
+            </span>
+          </div>
+        </div>
+
         <div className="question-container">
-          <h3>
-            Question {currentQuestionIndex + 1}: {currentQuestion.question}
-          </h3>
+          <h3 className="question-text">{currentQuestion.question}</h3>
+          
           <div className="option-container">
             {currentQuestion.options.map((option, index) => (
               <button
@@ -151,32 +194,24 @@ const QuizPage = () => {
                 disabled={selectedOptionIndex !== null}
               >
                 <span className="option-label">{OPTION_LABELS[index]}</span>
-                {option}
+                <span className="option-text">{option}</span>
               </button>
             ))}
           </div>
         </div>
+
         <div className="navigation-buttons">
-          {currentQuestionIndex < questions.length - 1 ? (
-            <button
-              className="next-button"
-              onClick={handleNextQuestion}
-              disabled={selectedOptionIndex === null}
-            >
-              Next
-            </button>
-          ) : (
+          {isLastQuestion && selectedOptionIndex !== null && (
             <button
               className="finish-button"
               onClick={handleFinishQuiz}
-              disabled={selectedOptionIndex === null}
             >
               Finish Quiz
             </button>
           )}
         </div>
       </div>
-      </div>
+    </div>
   );
 };
 

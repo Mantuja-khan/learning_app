@@ -103,7 +103,13 @@ const StudentDashboard = () => {
 
     const toggleNotifications = () => {
         setShowNotifications(!showNotifications);
-        setUnreadCount(0);
+        if (!showNotifications) {
+            setUnreadCount(0);
+        }
+    };
+
+    const closeNotifications = () => {
+        setShowNotifications(false);
     };
 
     const handleNotificationClick = (notification) => {
@@ -121,7 +127,6 @@ const StudentDashboard = () => {
     const handleLoginClick = () => navigate('/login');
     const handleQuizpanel = () => navigate(isLoggedIn ? '/quizpanel' : '/login')
     const handleProfileClick = () => navigate('/profile');
-    const toggleMenu = () => setShowMenu(!showMenu);
 
     return (
         <>
@@ -143,14 +148,8 @@ const StudentDashboard = () => {
                         src={profilePhotoURL || profileIcon}
                         alt="Profile"
                         className="profile-icon"
-                        onClick={toggleMenu}
+                        onClick={handleProfileClick}
                     />
-                    {showMenu && (
-                        <div className="dropdown-menu">
-                            <button onClick={handleProfileClick}>Profile</button>
-                            <button onClick={handleLogout}>Logout</button>
-                        </div>
-                    )}
                     <img
                         src={notificationIcon}
                         alt="Notifications"
@@ -159,21 +158,26 @@ const StudentDashboard = () => {
                     />
                     {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
                     {showNotifications && (
-                        <div className="notifications-dropdown" ref={notificationRef}>
-                            <h3>Notifications</h3>
-                            {notifications.length > 0 ? (
-                                notifications.map((notification, index) => (
-                                    <div
-                                        key={index}
-                                        className="notification-item"
-                                        onClick={() => handleNotificationClick(notification)}
-                                    >
-                                        <p>{notification.message}</p>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>No new notifications</p>
-                            )}
+                        <div className="notifications-sidebar" ref={notificationRef}>
+                            <div className="notifications-header">
+                                <h3>Notifications</h3>
+                                <button className="close-notifications" onClick={closeNotifications}>×</button>
+                            </div>
+                            <div className="notifications-content">
+                                {notifications.length > 0 ? (
+                                    notifications.map((notification, index) => (
+                                        <div
+                                            key={index}
+                                            className="notification-item"
+                                            onClick={() => handleNotificationClick(notification)}
+                                        >
+                                            <p>{notification.message}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No new notifications</p>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
@@ -191,7 +195,7 @@ const StudentDashboard = () => {
                     <div className="option-card">
                         <img src={quizIcon} alt="Quiz Icon" className="option-icon" />
                         <h3>Quiz</h3>
-                        <p>Test your knowledge by taking quizzes on various subjects.</p>
+                        <p>Test your knowledge by taking quizzes on various subjects at K-Hub</p>
                         <button className="btn" onClick={handleQuizpanel}>Start Quiz</button>
                     </div>
                     <div className="option-card">
@@ -202,6 +206,7 @@ const StudentDashboard = () => {
                     </div>
                 </div>
             </div>
+            
         </>
     );
 };

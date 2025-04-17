@@ -33,14 +33,6 @@
           "answer": "A container for data",
           "topic": "JavaScript Basics",
           "explanation": "A variable in JavaScript is a container that holds a value, such as a number, string, or object, that can be used and changed during the execution of a program."
-        },
-        {
-          "id": 5,
-          "question": "Which tag is used to link an external CSS file?",
-          "options": ["<style>", "<link>", "<css>", "<script>"],
-          "answer": "<link>",
-          "topic": "HTML",
-          "explanation": "The <link> tag is used to link an external CSS file to an HTML document. It is typically placed in the <head> section of the HTML."
         }
       ],
       "Medium": [

@@ -1,86 +1,182 @@
-/* Container for the question paper list */
 .question-paper-list {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f9;
-    border-radius: 12px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-    margin-top: 10%;
-  }
-  
-  /* Search and filter container styling */
-  .search-filter {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: center;
-  }
-  
-  /* Input field styling */
-  .search-filter input {
-    padding: 10px;
-    font-size: 16px;
-    width: 60%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  /* Input hover and focus effect */
-  .search-filter input:focus {
-    outline: none;
-    box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.2);
-  }
-  
-  /* Dropdown styling */
-  .search-filter select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-  }
-  
-  /* Spinner styling */
-  .spinner {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    padding: 20px 0;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  /* Grid container for question paper cards */
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+  background: rgb(225, 224, 224);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  height: 100vh; /* Fixed height for the entire panel */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent overall panel from scrolling */
+  position: relative;
+}
+
+.search-filter-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  flex-shrink: 0; /* Prevent this section from shrinking */
+}
+
+.search-input, .year-select {
+  display: flex;
+  align-items: center;
+  background-color: rgba(245, 247, 250, 0.6);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input:focus-within, .year-select:focus-within {
+  box-shadow: 0 1px 5px rgba(59, 130, 246, 0.3);
+  background-color: #fff;
+  border: 1px solid rgba(59, 130, 246, 0.5);
+}
+
+.search-icon, .calendar-icon {
+  color: #6b7280;
+  margin-right: 0.5rem;
+}
+
+.search-input input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.25rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+.year-select select {
+  border: none;
+  background: transparent;
+  padding: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  min-width: 120px;
+  color: #374151;
+}
+
+.results-count {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  flex-shrink: 0; /* Prevent this from shrinking */
+}
+
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto; /* Make only this part scrollable */
+  padding-right: 0.5rem; /* Space for scrollbar */
+}
+
+.paper-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+/* Responsive grid - adjusts to 4 columns on larger screens */
+@media (min-width: 640px) {
   .paper-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 3fr));
-    gap: 20px;
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in-out forwards;
-    overflow-y: scroll;
-    height: 500px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .paper-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .paper-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 0;
+  color: #6b7280;
+}
+
+.no-results p:first-child {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+/* Custom scrollbar styling */
+.scrollable-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 640px) {
+  .question-paper-list {
+    padding: 1.5rem;
+    border-radius: 8px;
+    height: 85vh; /* Slightly taller on mobile */
   }
   
-  /* No results message */
-  .no-results {
-    color: #666;
-    text-align: center;
-    font-size: 1em;
-    padding: 20px;
+  .search-filter-container {
+    flex-direction: column;
+    gap: 0.75rem;
   }
   
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  .search-input, .year-select {
+    width: 100%;
   }
-  
+}

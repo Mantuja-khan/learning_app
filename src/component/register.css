@@ -1,211 +1,485 @@
-Container for registration form
+/* Updated CSS for an attractive and responsive registration page */
 .register-container {
-    width: 400px;  /* Increased width for better readability */
-    margin: 50px auto;
-    padding: 40px;
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Softer shadow */
-    text-align: center;
-    position: relative;
-    transition: transform 0.4s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
 }
 
-.register-container:hover {
-    transform: translateY(-10px); /* Small lift-up effect */
+.register-card {
+  width: 100%;
+  max-width: 550px; /* Increased from 500px to accommodate wider inputs */
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  padding: 1.8rem;
 }
 
-/* Title for registration form */
-.register-container h2 {
-    margin-bottom: 25px;
-    font-size: 28px;
-    color: #333;
-    font-weight: 700;
-    letter-spacing: 1px;
+.register-title {
+  text-align: center;
+  color: #5469d4;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem; /* Slightly reduced from 2rem */
+  font-weight: 600;
 }
 
-/* Input fields and labels */
-.register-form1 .form {
-    margin-bottom: 20px;
-    text-align: left;
+/* Progress indicator */
+.progress-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  position: relative;
 }
 
-.register-form1 label {
-    display: block;
-    margin-bottom: 8px;
-    margin-top: 8px;
-    font-weight: bold;
-    color: #333;
-    margin-left:40px ;
-    text-align: left;
-    font-size: 14px;
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
-/* Styling for input fields */
-.register-form1 input {
-    width: 100%;  /* Full width for a cleaner look */
-    padding: 12px 15px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    background-color: rgb(240, 240, 240);
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
 }
 
-.register-form1 input:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);  /* Green shadow on focus */
+.step-text {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+  text-align: center;
 }
 
-/* Error message styling */
-.register-form1 .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 2px;
+.step.active .step-number {
+  background-color: #5469d4;
+  color: white;
+  border-color: #5469d4;
+  transform: scale(1.1);
 }
 
-/* Button styles */
-.btn1 {
-    padding: 12px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    margin-top: 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    width: 30%;
-}
-.btn2 {
-    padding: 12px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    margin-top: 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    width: 30%;
+.step.active .step-text {
+  color: #5469d4;
+  font-weight: 600;
 }
 
-
-.btn1:hover {
-    background-color: #45a049;
-    box-shadow: 0 8px 20px rgba(69, 160, 73, 0.4);
+.step.completed .step-number {
+  background-color: #38a169;
+  color: white;
+  border-color: #38a169;
 }
 
-/* Transition classes for dynamic UI */
-.transition {
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: all 0.5s ease;
+.progress-line {
+  position: absolute;
+  top: 17px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background-color: #e9ecef;
+  z-index: 0;
 }
 
-.register-form {
-    transition: all 0.5s ease;
+.register-form1 {
+  position: relative;
+  transition: transform 0.5s ease;
+  overflow: hidden;
+  width: 100%;
 }
 
-.first-section,
-.second-section {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.5s ease;
+.register-form1.transition {
+  transform: translateX(-50px);
+  opacity: 0;
 }
 
-/* Loading screen styles */
-.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);  /* Darker background for better contrast */
-    display: flex;
-    border-radius: 30px;
-    justify-content: center;
-    align-items: center;
-    /* z-index: 9999; */
-    /* animation: fadeIn 0.5s ease; */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem; /* Reduced from 1.25rem */
+  width: 500px;
 }
 
-/* Spinner for loading screen */
-.loading-container {
-    text-align: center;
-    color: #fff;
-    font-size: 16px;
+.form-group1 {
+  display: flex;
+  flex-direction: column;
 }
 
-/* .spinner {
-    border: 6px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top: 6px solid #fff;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-} */
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.form-group1 label {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: #4a5568;
+  width: 100%;
+  text-align: left;
 }
 
-/* Fade-in effect for loading screen */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+.form-group1 input,
+.form-group1 select {
+  padding: 10px 12px;
+  border: 1px solid #c7c9cb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
 }
 
-/* Responsive Design */
+.form-group1 input:focus,
+.form-group1 select:focus {
+  outline: none;
+  border-color: #5469d4;
+  box-shadow: 0 0 0 3px rgba(84, 105, 212, 0.15);
+}
+
+.input-error {
+  border-color: #e53e3e !important;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  width: 100%;
+}
+
+.submit-error {
+  background-color: #fff5f5;
+  padding: 10px;
+  border-radius: 5px;
+  border-left: 3px solid #e53e3e;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+/* Password input styling with show/hide icon */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #718096;
+}
+
+/* Form Buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.3rem;
+  width: 100%;
+}
+
+.two-buttons {
+  justify-content: space-between;
+}
+
+.btn-continue,
+.btn-register,
+.btn-back {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.btn-continue,
+.btn-register {
+  background-color: #5469d4;
+  color: white;
+  min-width: 150px;
+}
+
+.btn-back {
+  background-color: transparent;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+  min-width: 110px;
+}
+
+.btn-continue:hover,
+.btn-register:hover {
+  background-color: #4054c7;
+  transform: translateY(-2px);
+}
+
+.btn-back:hover {
+  background-color: #f7fafc;
+}
+
+.arrow-icon {
+  font-style: normal;
+}
+
+.arrow-icon.back {
+  margin-right: 0.25rem;
+}
+
+/* Login redirect */
+.login-redirect {
+  text-align: center;
+  margin-top: 1.3rem;
+  color: #4a5568;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.login-link {
+  color: #5469d4;
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 0.25rem;
+  transition: color 0.2s;
+}
+
+.login-link:hover {
+  color: #4054c7;
+  text-decoration: underline;
+}
+
+/* Profile photo upload styling */
+.profile-upload {
+  margin-bottom: 0.8rem;
+}
+
+.upload-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.preview-container {
+  width: 70px; /* Reduced from 80px */
+  height: 70px; /* Reduced from 80px */
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f7fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #cbd5e0;
+  flex-shrink: 0;
+}
+
+.profile-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #a0aec0;
+}
+
+.upload-icon {
+  font-size: 1.4rem;
+  font-style: normal;
+}
+
+.upload-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.custom-file-upload {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background-color: #cbd5e0;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.file-hint {
+  color: #718096;
+  font-size: 0.75rem;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-    .register-container {
-        width: 90%;
-        padding: 30px;
-    }
-
-    .register-container h2 {
-        font-size: 24px;
-    }
-
-    .btn {
-        padding: 10px 15px;
-        font-size: 14px;
-    }
+  .register-card {
+    padding: 1.3rem;
+    max-width: 500px; /* Increased from 460px to better accommodate inputs */
+  }
+  
+  .register-title {
+    font-size: 1.6rem;
+  }
+  
+  .btn-continue,
+  .btn-register,
+  .btn-back {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .step-text {
+    font-size: 0.75rem;
+  }
+  
+  .form-group1 input,
+  .form-group1 select {
+    font-size: 0.9rem;
+  }
 }
 
-@media (max-width: 480px) {
-    .register-container {
-        width: 100%;
-        padding: 20px;
-    }
-
-    .btn {
-        font-size: 12px;
-    }
-
-    /* .spinner {
-        width: 40px;
-        height: 40px;
-    } */
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
+@media (max-width: 600px) {
+  .register-card {
+    padding: 1.1rem;
+    border-radius: 10px;
+    max-width: 480px; /* Increased from 440px */
+  }
+  
+  .register-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.1rem;
+  }
+  
+  .form-group1 {
+    width: 100%; /* On smaller screens, use full width available */
+    max-width: 400px; /* But cap at 400px if possible */
+  }
+  
+  .form-group1 input,
+  .form-group1 select {
+    padding: 9px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .upload-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .preview-container {
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-actions.two-buttons {
+    flex-direction: column-reverse;
     gap: 1rem;
   }
   
-  .button-group .btn1,
-  .button-group .btn2 {
-    flex: 1;
+  .btn-continue,
+  .btn-register,
+  .btn-back {
+    width: 100%;
+    justify-content: center;
+    min-width: unset;
+    font-size: 0.85rem;
   }
   
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+  
+  .step-text {
+    font-size: 0.7rem;
+  }
+  
+  .progress-line {
+    top: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .register-card {
+    padding: 0.9rem;
+    max-width: 350px; /* Increased from 330px */
+  }
+  
+  .register-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.9rem;
+  }
+  
+  .progress-indicator {
+    margin-bottom: 1.3rem;
+  }
+  
+  .form-section {
+    gap: 0.9rem;
+  }
+  
+  .form-group1 label {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .form-group1 input,
+  .form-group1 select {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .error {
+    font-size: 0.7rem;
+  }
+  
+  .custom-file-upload {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .file-hint {
+    font-size: 0.65rem;
+  }
+  
+  .password-toggle-icon {
+    font-size: 1rem;
+  }
+  
+  .btn-continue,
+  .btn-register,
+  .btn-back {
+    font-size: 0.8rem;
+    padding: 8px 14px;
+  }
+}

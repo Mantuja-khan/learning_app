@@ -5,19 +5,24 @@ body {
     margin: 0;
     padding: 0;
   }
-  .main_quiz_panel{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .quiz-panel {
-    height: 60%;
-    width:500px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
+  /* Update these styles */
+.main_quiz_panel {
+  height: 100vh; /* Use viewport height instead of just 100% */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quiz-panel {
+  height: auto; /* Change from 100% to auto to fit content */
+  width: 500px;
+  max-width: 90%; /* Add this to make it responsive on small screens */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
   
   .quiz-panel h2 {
     font-size: 1.8rem;
