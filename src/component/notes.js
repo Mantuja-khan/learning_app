@@ -64,9 +64,7 @@ const Notes = () => {
 
   return (
     <div className='main_note_page'>
-      <h1 className="note-title">
-        <span>Knowledge</span> <span className="hub">Hub</span>
-      </h1>
+      
       <div className="container">
         <h1 className="h1">Select Notes & Videos</h1>
 

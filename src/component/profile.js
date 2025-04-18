@@ -10,6 +10,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -86,7 +87,7 @@ const Profile = () => {
 
   const handleSave = async () => {
     try {
-      setIsLoading(true);
+      setIsUpdating(true);
       const db = getDatabase(app);
       const storage = getStorage(app);
       const userRoll_no = localStorage.getItem('studentRoll_no');
@@ -128,7 +129,7 @@ const Profile = () => {
       console.error("Error updating profile:", error);
       alert("Failed to update profile. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsUpdating(false);
     }
   };
 
@@ -153,7 +154,7 @@ const Profile = () => {
     }, 1000);
   };
 
-  const handleBackToDashboard = () => {
+  const handleDashboard = () => {
     navigate('/');
   };
 
@@ -189,6 +190,19 @@ const Profile = () => {
         </div>
       )}
       
+      {isUpdating && (
+        <div className="updating-overlay">
+          <div className="updating-message">
+            <div className="custom-loading">
+              <div className="circle-pulse"></div>
+              <div className="circle-pulse"></div>
+              <div className="circle-pulse"></div>
+            </div>
+            <p>Updating your profile...</p>
+          </div>
+        </div>
+      )}
+      
       {showLogoutSuccess && (
         <div className="success-popup-overlay">
           <div className="success-popup">
@@ -209,177 +223,173 @@ const Profile = () => {
         </div>
       )}
       
-      <div className="profile-header-bw">
-        <div className="header-left">
-          <button className="back-button-bw" onClick={handleBackToDashboard}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to Dashboard
-          </button>
-        </div>
-        
-        <div className="header-center">
-          <h1 className="profile-title-bw">My Profile</h1>
-        </div>
-        
-        <div className="header-right">
-          <button className="logout-button-bw" onClick={handleLogout}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Logout
-          </button>
-        </div>
-      </div>
-      
-      <div className="profile-container1">
-        <div className="profile-details1">
-          <div className="profile-info1">
-            <div className="profile-photo-container">
-              <img
-                src={user.profilePhotoURL || "https://via.placeholder.com/150"}
-                alt="Profile"
-                className="profile-picture1"
-              />
-              {isEditing && (
-                <div className="upload-overlay">
-                  <label htmlFor="profile-upload" className="upload-label">
-                    <span className="camera-icon">📷</span>
-                  </label>
-                  <input 
-                    id="profile-upload"
-                    type="file" 
-                    name="profilePhoto" 
-                    onChange={handleChange}
-                    className="file-input" 
-                  />
-                </div>
-              )}
-            </div>
-            
-            <div className="user-identity">
-              <h2 className="user-name">{user.name} {user.surname}</h2>
-              <p className="user-roll">{user.Roll_no}</p>
-            </div>
-            
-            <button
-              className={`edit-btn1 ${isEditing ? 'save-mode' : ''}`}
-              onClick={() => {
-                if (isEditing) {
-                  handleSave();
-                } else {
-                  setIsEditing(true);
-                }
-              }}
-            >
-              {isEditing ? "Save Changes" : "Edit Profile"}
+      <div className="profile-content-wrapper">
+        {/* Simplified Navbar */}
+        <div className="profile-navbar">
+          
+          <div className="navbar-links">
+            <div className="nav-link" onClick={handleDashboard}>Dashboard</div>
+          </div>
+          <div className="navbar-actions">
+            <button className="logout-nav-button" onClick={handleLogout}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              Logout
             </button>
           </div>
-
-          <div className="profile-card">
-            <h3 className="section-title">Personal Information</h3>
-            <div className="form-fields1">
-              <div className="field-row1">
-                <div className="field1">
-                  <label>First Name</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="name"
-                      value={user.name}
+        </div>
+        
+        <div className="profile-container1">
+          <h1 className="profile-page-title">My Profile</h1>
+          
+          <div className="profile-details1">
+            <div className="profile-info1">
+              <div className="profile-photo-container">
+                <img
+                  src={user.profilePhotoURL || "https://via.placeholder.com/150"}
+                  alt="Profile"
+                  className="profile-picture1"
+                />
+                {isEditing && (
+                  <div className="upload-overlay">
+                    <label htmlFor="profile-upload" className="upload-label">
+                      <span className="camera-icon">📷</span>
+                    </label>
+                    <input 
+                      id="profile-upload"
+                      type="file" 
+                      name="profilePhoto" 
                       onChange={handleChange}
-                      className="profile-input"
+                      className="file-input" 
                     />
-                  ) : (
-                    <p className="field-value">{user.name || "Not specified"}</p>
-                  )}
-                </div>
-                <div className="field1">
-                  <label>Last Name</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="surname"
-                      value={user.surname}
-                      onChange={handleChange}
-                      className="profile-input"
-                    />
-                  ) : (
-                    <p className="field-value">{user.surname || "Not specified"}</p>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
+              
+              <div className="user-identity">
+                <h2 className="user-name">{user.name} {user.surname}</h2>
+                <p className="user-roll">{user.Roll_no}</p>
+              </div>
+              
+              <button
+                className={`edit-btn1 ${isEditing ? 'save-mode' : ''}`}
+                onClick={() => {
+                  if (isEditing) {
+                    handleSave();
+                  } else {
+                    setIsEditing(true);
+                  }
+                }}
+              >
+                {isEditing ? "Save" : "Edit"}
+              </button>
+            </div>
 
-              <div className="field-row1">
-                <div className="field1">
-                  <label>Phone Number</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="phone_no"
-                      value={user.phone_no}
-                      onChange={handleChange}
-                      className="profile-input"
-                    />
-                  ) : (
-                    <p className="field-value">{user.phone_no || "Not specified"}</p>
-                  )}
-                </div>
-                <div className="field1">
-                  <label>Password</label>
-                  {isEditing ? (
-                    <div className="password-field">
+            <div className="profile-card">
+              <h3 className="section-title">Personal Information</h3>
+              <div className="form-fields1">
+                <div className="field-row1">
+                  <div className="field1">
+                    <label>First Name</label>
+                    {isEditing ? (
                       <input
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        value={user.password}
+                        type="text"
+                        name="name"
+                        value={user.name}
                         onChange={handleChange}
                         className="profile-input"
                       />
-                      <span 
-                        className="password-toggle" 
-                        onClick={togglePasswordVisibility}
-                      >
-                        {showPassword ? "👁️" : "👁️‍🗨️"}
-                      </span>
-                    </div>
-                  ) : (
-                    <p className="field-value">••••••••</p>
-                  )}
+                    ) : (
+                      <p className="field-value">{user.name || "Not specified"}</p>
+                    )}
+                  </div>
+                  <div className="field1">
+                    <label>Last Name</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="surname"
+                        value={user.surname}
+                        onChange={handleChange}
+                        className="profile-input"
+                      />
+                    ) : (
+                      <p className="field-value">{user.surname || "Not specified"}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="field-row1">
-                <div className="field1">
-                  <label>Branch</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="branch"
-                      value={user.branch}
-                      onChange={handleChange}
-                      className="profile-input"
-                    />
-                  ) : (
-                    <p className="field-value">{user.branch || "Not specified"}</p>
-                  )}
+                <div className="field-row1">
+                  <div className="field1">
+                    <label>Phone Number</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="phone_no"
+                        value={user.phone_no}
+                        onChange={handleChange}
+                        className="profile-input"
+                      />
+                    ) : (
+                      <p className="field-value">{user.phone_no || "Not specified"}</p>
+                    )}
+                  </div>
+                  <div className="field1">
+                    <label>Password</label>
+                    {isEditing ? (
+                      <div className="password-field">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          value={user.password}
+                          onChange={handleChange}
+                          className="profile-input"
+                        />
+                        <span 
+                          className="password-toggle" 
+                          onClick={togglePasswordVisibility}
+                        >
+                          {showPassword ? "👁️" : "👁️‍🗨️"}
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="field-value">••••••••</p>
+                    )}
+                  </div>
                 </div>
-                <div className="field1">
-                  <label>Semester</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="semester"
-                      value={user.semester}
-                      onChange={handleChange}
-                      className="profile-input"
-                    />
-                  ) : (
-                    <p className="field-value">{user.semester || "Not specified"}</p>
-                  )}
+
+                <div className="field-row1">
+                  <div className="field1">
+                    <label>Branch</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="branch"
+                        value={user.branch}
+                        onChange={handleChange}
+                        className="profile-input"
+                      />
+                    ) : (
+                      <p className="field-value">{user.branch || "Not specified"}</p>
+                    )}
+                  </div>
+                  <div className="field1">
+                    <label>Semester</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="semester"
+                        value={user.semester}
+                        onChange={handleChange}
+                        className="profile-input"
+                      />
+                    ) : (
+                      <p className="field-value">{user.semester || "Not specified"}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
